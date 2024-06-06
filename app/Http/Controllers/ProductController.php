@@ -9,18 +9,37 @@ use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
-    public function allpro()
-    {
-        $products = Product::all();
-        return view('seller.products', compact('products'));
+    public function allpro(Request $request)
+{
+    $query = Product::query(); 
+
+    if ($request->has('search')) {
+        $query->where('name', 'like', '%' . $request->input('search') . '%');
     }
 
-    public function index()
-    {
-        $userId = Auth::id();
-        $products = Product::where('id_user', $userId)->get();
-        return view('seller.products', compact('products'));
+    if ($request->has('category') && $request->input('category') != '') {
+        $query->where('categories', $request->input('category'));
     }
+
+    
+    return view('seller.products', compact('products'));
+}
+    public function index(Request $request)
+{
+    $userId = Auth::id();
+    $query = Product::where('id_user', $userId);
+
+    if ($request->has('search')) {
+        $query->where('name', 'like', '%' . $request->input('search') . '%');
+    }
+
+    if ($request->has('category') && $request->input('category') != '') {
+        $query->where('categories', $request->input('category'));
+    }
+
+    $products = $query->get();
+    return view('seller.products', compact('products'));
+}
 
     public function create()
     {
@@ -35,9 +54,9 @@ class ProductController extends Controller
             'description' => 'required|string',
             'rating' => 'required|numeric',
             'categories' => 'required|string',
-            'image1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-    'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-    'image3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'image3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
     
         $product = new Product;
@@ -48,20 +67,32 @@ class ProductController extends Controller
         $product->rating = $request->input('rating');
         $product->categories = $request->input('categories');
     
-        if ($request->hasFile('image1')) {
-            $image1Path = $request->file('image1')->store('public/photos/');
-            $product->image1 = basename($image1Path);
-        }
+        if($request->hasfile('image1'))
+{
+    $file = $request->file('image1');
+    $extension = $file->getClientOriginalExtension();
+    $filename = time() . '-' . uniqid() . '.' . $extension; // Append unique identifier
+    $file->move('uploads/photos/', $filename);
+    $product->image1 = $filename;
+}
+if($request->hasfile('image2'))
+{
+    $file = $request->file('image2');
+    $extension = $file->getClientOriginalExtension();
+    $filename = time() . '-' . uniqid() . '.' . $extension; // Append unique identifier
+    $file->move('uploads/photos/', $filename);
+    $product->image2 = $filename;
+}
+if($request->hasfile('image3'))
+{
+    $file = $request->file('image3');
+    $extension = $file->getClientOriginalExtension();
+    $filename = time() . '-' . uniqid() . '.' . $extension; // Append unique identifier
+    $file->move('uploads/photos/', $filename);
+    $product->image3 = $filename;
+}
     
-        if ($request->hasFile('image2')) {
-            $image2Path = $request->file('image2')->store('public/photos/');
-            $product->image2 = basename($image2Path);
-        }
-    
-        if ($request->hasFile('image3')) {
-            $image3Path = $request->file('image3')->store('public/photos/');
-            $product->image3 = basename($image3Path);
-        }
+        
     
         $product->save();
     
@@ -92,9 +123,9 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'rating' => 'nullable|numeric|min:0|max:5',
             'categories' => 'nullable|string',
-            'image1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'image3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image1' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'image2' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'image3' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
         $product = Product::findOrFail($id);
@@ -105,23 +136,47 @@ class ProductController extends Controller
         $product->rating = $request->input('rating');
         $product->categories = $request->input('categories');
 
-        if ($request->hasFile('image1')) {
-            $this->deleteOldImage('uploads/productImages/', $product->image1);
-            $product->image1 = $this->uploadImage($request->file('image1'), '_image1');
-        }
+        if($request->hasfile('image1'))
+{
+    $des = 'uploads/photos/'.$product->image1;
+    if(File::exists($des)){
+        File::delete($des);
+    }
+    $file = $request->file('image1');
+    $extension = $file->getClientOriginalExtension();
+    $filename = time() . '-' . uniqid() . '.' . $extension; // Append unique identifier
+    $file->move('uploads/photos/', $filename);
+    $product->image1 = $filename;
+}
+if($request->hasfile('image2'))
+{
+    $des = 'uploads/photos/'.$product->image2;
+    if(File::exists($des)){
+        File::delete($des);
+    }
+    $file = $request->file('image2');
+    $extension = $file->getClientOriginalExtension();
+    $filename = time() . '-' . uniqid() . '.' . $extension; // Append unique identifier
+    $file->move('uploads/photos/', $filename);
+    $product->image2 = $filename;
+}
+if($request->hasfile('image3'))
+{
+    $des = 'uploads/photos/'.$product->image3;
+    if(File::exists($des)){
+        File::delete($des);
+    }
+    $file = $request->file('image3');
+    $extension = $file->getClientOriginalExtension();
+    $filename = time() . '-' . uniqid() . '.' . $extension; // Append unique identifier
+    $file->move('uploads/photos/', $filename);
+    $product->image3 = $filename;
+}
 
-        if ($request->hasFile('image2')) {
-            $this->deleteOldImage('uploads/productImages/', $product->image2);
-            $product->image2 = $this->uploadImage($request->file('image2'), '_image2');
-        }
-
-        if ($request->hasFile('image3')) {
-            $this->deleteOldImage('uploads/productImages/', $product->image3);
-            $product->image3 = $this->uploadImage($request->file('image3'), '_image3');
-        }
+        
 
         $product->save();
-        return redirect()->back()->with('success', 'Product updated successfully!');
+        return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
 
     protected function deleteOldImage($path, $filename)

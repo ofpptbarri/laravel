@@ -22,7 +22,7 @@
         </div>
     @endif
 
-    <form action="{{ route('products.store') }}" method="POST">
+    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div>
             <label for="name">Name:</label>
@@ -49,7 +49,7 @@
         </div>
         
         <label for="image1">Image 1:</label>
-        <input type="text" name="image1" id="image1" value="{{ old('image1') }}" required>
+        <input type="file" name="image1" id="image1" value="{{ old('image1') }}" required>
         <br>
         <label for="image2">Image 2:</label>
         <input type="file" name="image2" id="image2" value="{{ old('image2') }}" required>

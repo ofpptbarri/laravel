@@ -46,6 +46,15 @@
             @endforeach
         </tbody>
     </table>
+    <form action="{{ route('products.index') }}" method="GET">
+        <input type="text" name="search" placeholder="Search by name">
+        <select name="category">
+            <option value="">All Categories</option>
+            <option value="phone">Phone</option>
+            <option value="computer">Computer</option>
+        </select>
+        <button type="submit">Search</button>
+    </form>
 
     <a href="{{ route('products.create') }}">Create New Product</a>
 </body>

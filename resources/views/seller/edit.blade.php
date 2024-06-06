@@ -16,7 +16,7 @@
         </div>
     @endif
 
-    <form action="{{ route('products.update', $product->id) }}" method="POST">
+    <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div>
@@ -37,17 +37,17 @@
         </div>
         <div>
             <label for="rating">Rating:</label>
-            <input type="number" step="0.01" id="rating" name="rating" value="{{ old('rating', $product->rating) }}" required>
+            <input type="number"  id="rating" name="rating" value="{{ old('rating', $product->rating) }}" required>
         </div>
         <div>
             <label for="image1">Image 1:</label>
-        <input type="file" name="image1" id="image1" value="{{ old('image1', $product->image1) }}" required>
+        <input type="file" name="image1" id="image1" value="{{ old('image1', $product->image1) }}" >
         <br>
         <label for="image2">Image 2:</label>
-        <input type="file" name="image2" id="image2" value="{{ old('image2', $product->image2) }}" required>
+        <input type="file" name="image2" id="image2" value="{{ old('image2', $product->image2) }}" >
         <br>
         <label for="image3">Image 3:</label>
-        <input type="file" name="image3" id="image3" value="{{ old('image3', $product->image3) }}" required>
+        <input type="file" name="image3" id="image3" value="{{ old('image3', $product->image3) }}" >
         <br>
             
         </div>
