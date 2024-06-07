@@ -11,18 +11,18 @@ class ProductController extends Controller
 {
     public function allpro(Request $request)
 {
-    $query = Product::query(); 
+    $products = Product::all(); 
 
     if ($request->has('search')) {
-        $query->where('name', 'like', '%' . $request->input('search') . '%');
+        $products->where('name', 'like', '%' . $request->input('search') . '%');
     }
 
     if ($request->has('category') && $request->input('category') != '') {
-        $query->where('categories', $request->input('category'));
+        $products->where('categories', $request->input('category'));
     }
 
     
-    return view('seller.products', compact('products'));
+    return view('allProducts', compact('products'));
 }
     public function index(Request $request)
 {
@@ -100,6 +100,11 @@ if($request->hasfile('image3'))
     }
 
     public function show(string $id)
+    {
+        $product = Product::findOrFail($id);
+        return view('seller.show', compact('product'));
+    }
+    public function showcase(string $id)
     {
         $product = Product::findOrFail($id);
         return view('seller.show', compact('product'));

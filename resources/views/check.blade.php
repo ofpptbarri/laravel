@@ -4,5 +4,5 @@
 @elseif(Auth::user()->type_user === 'seller')
     <a href="{{ route('products.index') }}">Products</a>
     
-    @else <p> <a href="{{ route('products.allpro') }}">Products</a></p>
+    @else <p> <a href="{{ route('products.allpro') }}">nta gha cliyan</a></p>
 @endif

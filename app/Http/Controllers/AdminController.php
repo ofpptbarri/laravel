@@ -18,6 +18,11 @@ class AdminController extends Controller
     {
         $user = User::findOrFail($id);
         $user->type_user = $request->type_user;
+        if( $user->type_user !== 'seller'){
+            
+            $product = Product::find($user->id);
+            $product->delete();
+        }
         $user->save();
 
         return redirect()->route('admin.users')->with('success', 'User role updated successfully.');

@@ -23,25 +23,20 @@
     </div>
     <div>
         <strong>Image:</strong>
-        <img src="{{ $product->image1 }}" alt="{{ $product->name }}">
+        
+        <img  style="width: 60px"src='{{ asset('uploads/photos/'.$product->image1) }}' alt=""></td>
     </div>
     <div>
         <strong>Image:</strong>
-        <img src="{{ $product->image2 }}" alt="{{ $product->name }}">
+        <img  style="width: 60px"src='{{ asset('uploads/photos/'.$product->image2) }}' alt=""></td>
     </div>
     <div>
         <strong>Image:</strong>
-        <img src="{{ $product->image3 }}" alt="{{ $product->name }}">
+        <img  style="width: 60px"src='{{ asset('uploads/photos/'.$product->image3) }}' alt=""></td>
     </div>
-    <div>
-        <strong>Created At:</strong>
-        {{ $product->created_at->format('d M Y, H:i') }}
-    </div>
-    <div>
-        <strong>Updated At:</strong>
-        {{ $product->updated_at->format('d M Y, H:i') }}
-    </div>
+    
 
-    <a href="{{ route('products.create') }}">Back to Create Product</a>
+    <a href="{{ route('products.index') }}">Back </a>
+    
 </body>
 </html>

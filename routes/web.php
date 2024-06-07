@@ -45,3 +45,4 @@ $router->group(['middleware' => ['auth', 'admin']], function () use ($router) {
 
 Route::get('/check', function () {return view('check');})->name('check');
 Route::get('/allproducts', [ProductController::class, 'allpro'])->name('products.allpro');
+Route::get('/products/{id}', [ProductController::class, 'showcase'])->name('products.show');

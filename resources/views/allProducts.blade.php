@@ -32,15 +32,13 @@
                     <td>${{ number_format($product->price, 2) }}</td>
                     <td>{{ $product->description }}</td>
                     <td>{{ number_format($product->rating, 1) }}/5</td>
-                    <td><img src="{{ $product->image }}" alt="{{ $product->name }}" width="50"></td>
+                    <td ><img style="width: 60px" src='{{ asset('uploads/photos/'.$product->image1) }}' alt=""></td>
+                    <td class="w-10"><img style="width: 60px" src='{{ asset('uploads/photos/'.$product->image2) }}' alt=""></td>
+                    <td class="w-10"> <img  style="width: 60px"src='{{ asset('uploads/photos/'.$product->image3) }}' alt=""></td>
                     <td>
                         <a href="{{ route('products.show', $product->id) }}">View</a>
                         
-                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit">Delete</button>
-                        </form>
+                        
                     </td>
                 </tr>
             @endforeach
